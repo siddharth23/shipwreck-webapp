@@ -1,0 +1,19 @@
+branch-defaults:
+  master:
+    environment: Sample-env
+environment-defaults:
+  LowCost-env:
+    branch: null
+    repository: null
+  Sample-env-1:
+    branch: null
+    repository: null
+global:
+  application_name: shipwreck-dev
+  default_ec2_keyname: null
+  default_platform: Tomcat
+  default_region: us-east-1
+  profile: eb-cli
+  sc: git
+deploy:
+  artifact: default/target/shipwreck-app-1.0-SNAPSHOT.war
