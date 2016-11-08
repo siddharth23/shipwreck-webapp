@@ -50,40 +50,42 @@ public class ShipwreckControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-//    @Autowired
-//    void setConverters(HttpMessageConverter<?>[] converters) {
-//
-//        this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream()
-//                .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
-//                .findAny()
-//                .orElse(null);
-//
-//        assertNotNull("the JSON message converter must not be null",
-//                this.mappingJackson2HttpMessageConverter);
-//    }
+    @Autowired
+    void setConverters(HttpMessageConverter<?>[] converters) {
+
+        this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream()
+                //.filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
+                .findAny()
+                .orElse(null);
+
+        assertNotNull("the JSON message converter must not be null",
+                this.mappingJackson2HttpMessageConverter);
+    }
 
 
     @Before
     public void setup() throws Exception {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
-        //this.shipwreckRepository.deleteAllInBatch();
-        this.shipwreck = shipwreckRepository.save(new Shipwreck());
+        this.shipwreckRepository.deleteAllInBatch();
+        this.shipwreck = shipwreckRepository.save(new Shipwreck(1L,"Ship","Ship Description","not working", 1, -1.0,-33.0,2007));
     }
 
     @Test
     public void readSingleShip() throws Exception {
-        mockMvc.perform(get("/api/v1/shipwrecks/"))
+        mockMvc.perform(get("/api/v1/shipwrecks/"
+                + this.shipwreck.getId()))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-                .andExpect(jsonPath("$.1.id", is(this.shipwreck.getId().intValue())));
-
-        String response = mockMvc.perform(get("/api/v1/shipwrecks/")).andReturn().getResponse().toString();
-                //.andExpect(jsonPath("$.name", is("")))
-                //.andExpect(jsonPath("$.description", is("")))
-                //.andExpect(jsonPath("$.condition", is("")))
-                //.andExpect(jsonPath("$.depth", is(this.shipwreck.getId().intValue())))
-                //.andExpect(jsonPath("$.latitude", is(this.shipwreck.getId().doubleValue())))
-                //.andExpect(jsonPath("$.longitude", is(this.shipwreck.getId().doubleValue())))
-                //.andExpect(jsonPath("$.yearDiscovered", is(this.shipwreck.getId().intValue())));
+                .andExpect(jsonPath("$.id", is(this.shipwreck.getId().intValue())))
+                .andExpect(jsonPath("$.name", is("Ship")))
+                .andExpect(jsonPath("$.description", is("Ship Description")))
+                .andExpect(jsonPath("$.condition", is("not working")))
+                .andExpect(jsonPath("$.depth", is(1)))
+                .andExpect(jsonPath("$.latitude", is(-1.0)))
+                .andExpect(jsonPath("$.longitude", is(-33.0)))
+                .andExpect(jsonPath("$.yearDiscovered", is(2007)));
+        ;
     }
+
+
 }
