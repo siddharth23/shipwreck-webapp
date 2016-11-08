@@ -66,7 +66,7 @@ public class ShipwreckControllerTest {
     @Before
     public void setup() throws Exception {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
-        this.shipwreckRepository.deleteAllInBatch();
+        //this.shipwreckRepository.deleteAllInBatch();
         this.shipwreck = shipwreckRepository.save(new Shipwreck(1L,"Ship","Ship Description","not working", 1, -1.0,-33.0,2007));
     }
 
@@ -79,13 +79,22 @@ public class ShipwreckControllerTest {
                 .andExpect(jsonPath("$.id", is(this.shipwreck.getId().intValue())))
                 .andExpect(jsonPath("$.name", is("Ship")))
                 .andExpect(jsonPath("$.description", is("Ship Description")))
-                .andExpect(jsonPath("$.condition", is("not 1working")))
+                .andExpect(jsonPath("$.condition", is("not working")))
                 .andExpect(jsonPath("$.depth", is(1)))
                 .andExpect(jsonPath("$.latitude", is(-1.0)))
                 .andExpect(jsonPath("$.longitude", is(-33.0)))
                 .andExpect(jsonPath("$.yearDiscovered", is(2007)));
-        ;
     }
 
+    @Test(expected=IllegalArgumentException.class)
+    public void deleteAShip() throws Exception {
+        mockMvc.perform(delete("/api/v1/shipwrecks/"
+                + this.shipwreck.getId()))
+                .andExpect(status().isOk())
+                .andExpect(content().contentType(contentType));
 
+            mockMvc.perform(get("/api/v1/shipwrecks/"
+                    + this.shipwreck.getId()))
+                    .andExpect(jsonPath("$.id", is("")));
+    }
 }
