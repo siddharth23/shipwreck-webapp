@@ -50,17 +50,17 @@ public class ShipwreckControllerTest {
     @Autowired
     private WebApplicationContext webApplicationContext;
 
-    @Autowired
-    void setConverters(HttpMessageConverter<?>[] converters) {
-
-        this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream()
-                //.filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
-                .findAny()
-                .orElse(null);
-
-        assertNotNull("the JSON message converter must not be null",
-                this.mappingJackson2HttpMessageConverter);
-    }
+//    @Autowired
+//    void setConverters(HttpMessageConverter<?>[] converters) {
+//
+//        this.mappingJackson2HttpMessageConverter = Arrays.asList(converters).stream()
+//                .filter(hmc -> hmc instanceof MappingJackson2HttpMessageConverter)
+//                .findAny()
+//                .orElse(null);
+//
+//        assertNotNull("the JSON message converter must not be null",
+//                this.mappingJackson2HttpMessageConverter);
+//    }
 
 
     @Before
@@ -72,16 +72,12 @@ public class ShipwreckControllerTest {
 
     @Test
     public void readSingleShip() throws Exception {
-        mockMvc.perform(get("/api/v1/shipwrecks/"
-                + this.shipwreck.getId()))
+        mockMvc.perform(get("/api/v1/shipwrecks/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(contentType))
-        ;
+                .andExpect(jsonPath("$.1.id", is(this.shipwreck.getId().intValue())));
 
-        String response = mockMvc.perform(get("/api/v1/shipwrecks/"
-                + this.shipwreck.getId())).andReturn().getResponse().toString();
-        System.out.println(response);
-                //.andExpect(jsonPath("$.id", is(this.shipwreck.getId().intValue())))
+        String response = mockMvc.perform(get("/api/v1/shipwrecks/")).andReturn().getResponse().toString();
                 //.andExpect(jsonPath("$.name", is("")))
                 //.andExpect(jsonPath("$.description", is("")))
                 //.andExpect(jsonPath("$.condition", is("")))
