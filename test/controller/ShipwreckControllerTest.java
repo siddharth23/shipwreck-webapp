@@ -79,7 +79,7 @@ public class ShipwreckControllerTest {
                 .andExpect(jsonPath("$.id", is(this.shipwreck.getId().intValue())))
                 .andExpect(jsonPath("$.name", is("Ship")))
                 .andExpect(jsonPath("$.description", is("Ship Description")))
-                .andExpect(jsonPath("$.condition", is("not working")))
+                .andExpect(jsonPath("$.condition", is("not 1working")))
                 .andExpect(jsonPath("$.depth", is(1)))
                 .andExpect(jsonPath("$.latitude", is(-1.0)))
                 .andExpect(jsonPath("$.longitude", is(-33.0)))
