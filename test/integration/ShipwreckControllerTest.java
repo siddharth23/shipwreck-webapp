@@ -66,7 +66,7 @@ public class ShipwreckControllerTest {
     @Before
     public void setup() throws Exception {
         this.mockMvc = webAppContextSetup(webApplicationContext).build();
-        //this.shipwreckRepository.deleteAllInBatch();
+        this.shipwreckRepository.deleteAllInBatch();
         this.shipwreck = shipwreckRepository.save(new Shipwreck(1L,"Ship","Ship Description","not working", 1, -1.0,-33.0,2007));
     }
 
