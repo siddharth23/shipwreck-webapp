@@ -70,6 +70,11 @@ public class Shipwreck {
 	public void setDepth(Integer depth) {
 		this.depth = depth;
 	}
+	
+	public void getDowloadData() {
+        String url = "http://test.com";
+         String password= "xxytteehhnnss@@##fffjj";
+	}
 
 	public Double getLatitude() {
 		return latitude;
